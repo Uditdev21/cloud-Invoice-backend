@@ -18,7 +18,7 @@ def create_user(user: User):
         
         user_dict = user.dict()  # Convert Pydantic model to dictionary
         result = users_collection.insert_one(user_dict)
-        userid= result.inserted_id
+        userid:str= str(result.inserted_id)
         token=JwtToken.create_access_token(data={"id":userid,"email": user.Email, "name": user.Name, "companyName": user.companyName, "address": user.Address, "phone": user.Phone})
         return {"message": "User created successfully", "id": str(result.inserted_id), "access_token": token, "token_type": "bearer"}
     except Exception as e:
